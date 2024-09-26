@@ -4,43 +4,56 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-export default function AddTransaction() {
+export default function EditTransaction() {
   const [amount, setAmount] = useState('');
   const [transactionType, setTransactionType] = useState('income');
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
+    const fetchTransaction = async () => {
+      const token = localStorage.getItem('access_token');
+      const res = await axios.get(`http://localhost:8000/api/transactions/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setAmount(res.data.amount);
+      setTransactionType(res.data.transaction_type);
+      setCategory(res.data.category.id);
+    };
+
     const fetchCategories = async () => {
       const token = localStorage.getItem('access_token');
       const res = await axios.get('http://localhost:8000/api/categories/', {
-        headers: { Authorization: `Token ${token}` }
+        headers: { Authorization: `Bearer ${token}` }
       });
       setCategories(res.data);
     };
+
+    fetchTransaction();
     fetchCategories();
-  }, []);
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const token = localStorage.getItem('access_token');
-    await axios.post(
-      'http://localhost:8000/api/transactions/',
+    await axios.put(
+      `http://localhost:8000/api/transactions/${id}/`,
       {
         amount,
         transaction_type: transactionType,
         category,
-        date: new Date().toISOString().split('T')[0],
+        date: new Date().toISOString().split('T')[0],  // Current date
       },
-      { headers: { Authorization: `Token ${token}` } }
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     router.push('/dashboard');
   };
 
   return (
     <div>
-      <h1>Add New Transaction</h1>
+      <h1>Edit Transaction</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="number"
@@ -66,7 +79,7 @@ export default function AddTransaction() {
             </option>
           ))}
         </select>
-        <button type="submit">Add Transaction</button>
+        <button type="submit">Update Transaction</button>
       </form>
     </div>
   );
