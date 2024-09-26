@@ -44,7 +44,7 @@ export default function Dashboard() {
       <h1>Transaction Dashboard</h1>
 
       <Link href="/add-transaction">
-        <a>Add New Transaction</a>
+        Add New Transaction
       </Link>
 
       <ul>
@@ -53,7 +53,7 @@ export default function Dashboard() {
             {transaction.transaction_type}: {transaction.amount} - {transaction.category.name}
             <button onClick={() => handleDelete(transaction.id)}>Delete</button>
             <Link href={`/edit-transaction/${transaction.id}`}>
-              <a>Edit</a>
+              Edit
             </Link>
           </li>
         ))}
