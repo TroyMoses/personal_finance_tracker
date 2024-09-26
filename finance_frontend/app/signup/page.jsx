@@ -1,26 +1,30 @@
 "use client";
 
-import { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 export default function Signup() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post('http://localhost:8000/api/signup/', {
-        username, password
+      const res = await axios.post("http://localhost:8000/api/signup/", {
+        username,
+        password,
+      }, {
+        headers: { 'Content-Type': 'application/json' }
       });
-      localStorage.setItem('access_token', res.data.token);
-      router.push('/dashboard');
+      console.log("Result: ", res);
+      localStorage.setItem("access_token", res.data.token);
+      router.push("/dashboard");
     } catch (err) {
-      setError('Signup failed. Username may be taken.');
+      setError("Signup failed. Username may be taken.");
     }
   };
 
@@ -45,11 +49,7 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>{error}</p>}
-      <Link href="/login">
-        Already have an account? Log in here
-      </Link>
+      <Link href="/">Already have an account? Log in here</Link>
     </div>
   );
 }
-
-

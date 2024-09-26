@@ -40,11 +40,18 @@ INSTALLED_APPS = [
 
     # third apps
     "rest_framework",
+    "rest_framework.authtoken",
     "corsheaders",
 
     # installed apps
     "transactions"
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
