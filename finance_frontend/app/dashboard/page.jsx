@@ -12,7 +12,7 @@ export default function Dashboard() {
       const token = localStorage.getItem('access_token');
       console.log('Token: ', token);
       const res = await axios.get('http://localhost:8000/api/transactions/', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Token ${token}` }
       });
       setTransactions(res.data);
     };

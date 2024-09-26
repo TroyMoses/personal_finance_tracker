@@ -17,7 +17,10 @@ export default function Signup() {
       const res = await axios.post("http://localhost:8000/api/signup/", {
         username,
         password,
+      }, {
+        headers: { 'Content-Type': 'application/json' }
       });
+      console.log("Result: ", res);
       localStorage.setItem("access_token", res.data.token);
       router.push("/dashboard");
     } catch (err) {
