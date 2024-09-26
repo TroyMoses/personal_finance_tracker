@@ -25,10 +25,15 @@ export default function Dashboard() {
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem('access_token');
-    await axios.delete(`http://localhost:8000/api/transactions/${id}/`, {
-      headers: { Authorization: `Token ${token}` }
-    });
-    setTransactions(transactions.filter((transaction) => transaction.id !== id));
+    try {
+      await axios.delete(`http://localhost:8000/api/transactions/${id}/`, {
+        headers: { Authorization: `Token ${token}` }
+      });
+      // Remove the deleted transaction from the state
+      setTransactions(transactions.filter((transaction) => transaction.id !== id));
+    } catch (error) {
+      console.error("Error deleting the transaction:", error);
+    }
   };
 
   const income = transactions.filter(t => t.transaction_type === 'income').reduce((acc, curr) => acc + curr.amount, 0);

@@ -16,7 +16,7 @@ export default function EditTransaction() {
     const fetchTransaction = async () => {
       const token = localStorage.getItem('access_token');
       const res = await axios.get(`http://localhost:8000/api/transactions/${id}/`, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Token ${token}` }
       });
       setAmount(res.data.amount);
       setTransactionType(res.data.transaction_type);
@@ -26,7 +26,7 @@ export default function EditTransaction() {
     const fetchCategories = async () => {
       const token = localStorage.getItem('access_token');
       const res = await axios.get('http://localhost:8000/api/categories/', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Token ${token}` }
       });
       setCategories(res.data);
     };
@@ -44,9 +44,9 @@ export default function EditTransaction() {
         amount,
         transaction_type: transactionType,
         category,
-        date: new Date().toISOString().split('T')[0],  // Current date
+        date: new Date().toISOString().split('T')[0],
       },
-      { headers: { Authorization: `Bearer ${token}` } }
+      { headers: { Authorization: `Token ${token}` } }
     );
     router.push('/dashboard');
   };
