@@ -13,14 +13,16 @@ export default function Home() {
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+
     try {
       const res = await axios.post("http://localhost:8000/api/login/", {
         username,
         password,
       });
-      console.log("Response: ", res);
+
       localStorage.setItem("access_token", res.data.token);
       router.push("/dashboard");
+      
     } catch (error) {
       setError('Login failed. Please check your username and password.');
       console.error("Login failed", error);
