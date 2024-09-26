@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -30,7 +32,7 @@ export default function Home() {
         <button type="submit">Login</button>
       </form>
       <Link href="/signup">
-        <a>Don{"’"}t have an account? Sign up here</a>
+        Don{"’"}t have an account? Sign up here
       </Link>
     </div>
   );

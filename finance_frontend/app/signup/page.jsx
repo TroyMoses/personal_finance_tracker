@@ -1,6 +1,8 @@
+"use client";
+
 import { useState } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import Link from "next/link";
 
 export default function Signup() {
@@ -31,18 +33,20 @@ export default function Signup() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
+          className="text-black"
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="text-black"
         />
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>{error}</p>}
       <Link href="/login">
-        <a>Already have an account? Log in here</a>
+        Already have an account? Log in here
       </Link>
     </div>
   );
