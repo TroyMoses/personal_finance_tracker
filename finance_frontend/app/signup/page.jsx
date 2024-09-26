@@ -46,7 +46,7 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>{error}</p>}
-      <Link href="/login">Already have an account? Log in here</Link>
+      <Link href="/">Already have an account? Log in here</Link>
     </div>
   );
 }
