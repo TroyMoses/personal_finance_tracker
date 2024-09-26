@@ -1,5 +1,8 @@
+"use client";
+
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import Plot from 'react-plotly.js';
 
 export default function Dashboard() {
   const [transactions, setTransactions] = useState([]);
@@ -16,6 +19,9 @@ export default function Dashboard() {
     fetchTransactions();
   }, []);
 
+  const income = transactions.filter(t => t.transaction_type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
+  const expenses = transactions.filter(t => t.transaction_type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
+
   return (
     <div>
       <h1>Transaction Dashboard</h1>
@@ -26,6 +32,12 @@ export default function Dashboard() {
           </li>
         ))}
       </ul>
+      {/* <Plot
+        data={[
+          {type: 'bar', x: ['Income', 'Expenses'], y: [income, expenses]}
+        ]}
+        layout={{width: 600, height: 400, title: 'Income vs Expenses'}}
+      /> */}
     </div>
   );
 }
