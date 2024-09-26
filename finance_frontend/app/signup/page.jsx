@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/router';
+import Link from "next/link";
 
 export default function Signup() {
   const [username, setUsername] = useState('');
@@ -40,6 +41,9 @@ export default function Signup() {
         <button type="submit">Sign Up</button>
       </form>
       {error && <p>{error}</p>}
+      <Link href="/login">
+        <a>Already have an account? Log in here</a>
+      </Link>
     </div>
   );
 }

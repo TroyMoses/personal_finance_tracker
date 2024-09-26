@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Link from "next/link";
 
 export default function Home() {
   const [username, setUsername] = useState('');
@@ -28,6 +29,9 @@ export default function Home() {
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button type="submit">Login</button>
       </form>
+      <Link href="/signup">
+        <a>Don{"’"}t have an account? Sign up here</a>
+      </Link>
     </div>
   );
 }
