@@ -7,7 +7,8 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name']
 
 class TransactionSerializer(serializers.ModelSerializer):
-    category = CategorySerializer()
+    # Use PrimaryKeyRelatedField to handle ForeignKey via ID
+    category = serializers.PrimaryKeyRelatedField(queryset=Category.objects.all())
 
     class Meta:
         model = Transaction

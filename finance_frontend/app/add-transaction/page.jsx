@@ -24,13 +24,15 @@ export default function AddTransaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem('access_token');
+
     await axios.post(
       'http://localhost:8000/api/transactions/',
       {
         amount,
         transaction_type: transactionType,
-        category: { id: category },
+        category,
         date: new Date().toISOString().split('T')[0],
       },
       { headers: { Authorization: `Token ${token}` } }

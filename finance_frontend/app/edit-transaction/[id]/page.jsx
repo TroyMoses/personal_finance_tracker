@@ -4,13 +4,13 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-export default function EditTransaction() {
+export default function EditTransaction({ params }) {
   const [amount, setAmount] = useState('');
   const [transactionType, setTransactionType] = useState('income');
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = params;
 
   useEffect(() => {
     const fetchTransaction = async () => {
@@ -58,12 +58,14 @@ export default function EditTransaction() {
         <input
           type="number"
           placeholder="Amount"
+          className='text-black'
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         <select
           value={transactionType}
           onChange={(e) => setTransactionType(e.target.value)}
+          className='text-black'
         >
           <option value="income">Income</option>
           <option value="expense">Expense</option>
@@ -71,6 +73,7 @@ export default function EditTransaction() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          className='text-black'
         >
           <option value="">Select Category</option>
           {categories.map((cat) => (
