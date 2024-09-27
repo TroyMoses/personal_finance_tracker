@@ -23,6 +23,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
 
 @api_view(['POST'])
 def signup(request):

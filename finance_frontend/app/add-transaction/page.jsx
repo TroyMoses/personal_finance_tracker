@@ -30,7 +30,7 @@ export default function AddTransaction() {
       {
         amount,
         transaction_type: transactionType,
-        category,
+        category: { id: category },
         date: new Date().toISOString().split('T')[0],
       },
       { headers: { Authorization: `Token ${token}` } }
@@ -45,12 +45,14 @@ export default function AddTransaction() {
         <input
           type="number"
           placeholder="Amount"
+          className="text-black"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         <select
           value={transactionType}
           onChange={(e) => setTransactionType(e.target.value)}
+          className="text-black"
         >
           <option value="income">Income</option>
           <option value="expense">Expense</option>
@@ -58,10 +60,11 @@ export default function AddTransaction() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
+          className="text-black"
         >
           <option value="">Select Category</option>
           {categories.map((cat) => (
-            <option key={cat.id} value={cat.id}>
+            <option key={cat.id} value={cat.id} className="text-black">
               {cat.name}
             </option>
           ))}
