@@ -62,12 +62,12 @@ export default function Dashboard() {
           </li>
         ))}
       </ul>
-      {/* <Plot
+      <Plot
         data={[
           {type: 'bar', x: ['Income', 'Expenses'], y: [income, expenses]}
         ]}
-        layout={{width: 600, height: 400, title: 'Income vs Expenses'}}
-      /> */}
+        layout={{width: 400, height: 300, title: 'Income vs Expenses'}}
+      />
     </div>
   );
 }
