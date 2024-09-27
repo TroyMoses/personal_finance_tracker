@@ -45,7 +45,7 @@ export default function Dashboard() {
     .reduce((acc, curr) => acc + curr.amount, 0);
 
   return (
-    <div className="bg-[gray] p-5 mt-20 rounded-lg">
+    <div className="bg-[gray] p-5 mt-20 rounded-lg text-center">
       <h1 className="text-2xl my-5">PERSONAL EXPENSE TRACKER</h1>
 
       <div className="flex flex-col gap-3 justify-center items-center">

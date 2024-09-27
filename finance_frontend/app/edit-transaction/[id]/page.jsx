@@ -52,8 +52,8 @@ export default function EditTransaction({ params }) {
   };
 
   return (
-    <div>
-      <h1>Edit Transaction</h1>
+    <div className="bg-[gray] p-5 mt-20 rounded-lg">
+      <h1 className="text-2xl my-5 uppercase">Edit Transaction</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="number"
