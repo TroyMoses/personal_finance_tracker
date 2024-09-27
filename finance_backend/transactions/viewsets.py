@@ -12,15 +12,18 @@ class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     permission_classes = [IsAuthenticated]
 
+    # Get all transactions for the authenticated user
     def get_queryset(self):
         return Transaction.objects.filter(user=self.request.user)
 
+    # Create a new transaction for the user
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = [IsAuthenticated]
 
 @api_view(['POST'])
 def signup(request):
