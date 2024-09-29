@@ -20,7 +20,7 @@ function Header() {
           </Button>
         </Link>
 
-        <Link href={"/sign-in"}>
+        <Link href={"/login"}>
           <Button className="rounded-full">Get Started</Button>
         </Link>
       </div>
