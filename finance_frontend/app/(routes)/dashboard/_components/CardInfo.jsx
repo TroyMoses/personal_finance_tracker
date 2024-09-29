@@ -21,20 +21,20 @@ function CardInfo({ budgetList, incomeList }) {
     }
   }, [budgetList, incomeList]);
 
-  useEffect(() => {
-    if (totalBudget > 0 || totalIncome > 0 || totalSpend > 0) {
-      const fetchFinancialAdvice = async () => {
-        const advice = await getFinancialAdvice(
-          totalBudget,
-          totalIncome,
-          totalSpend
-        );
-        setFinancialAdvice(advice);
-      };
+  // useEffect(() => {
+    // if (totalBudget > 0 || totalIncome > 0 || totalSpend > 0) {
+    //   const fetchFinancialAdvice = async () => {
+    //     const advice = await getFinancialAdvice(
+    //       totalBudget,
+    //       totalIncome,
+    //       totalSpend
+    //     );
+    //     setFinancialAdvice(advice);
+    //   };
 
-      fetchFinancialAdvice();
-    }
-  }, [totalBudget, totalIncome, totalSpend]);
+      // fetchFinancialAdvice();
+  //   }
+  // }, [totalBudget, totalIncome, totalSpend]);
 
   const CalculateCardInfo = () => {
     console.log(budgetList);

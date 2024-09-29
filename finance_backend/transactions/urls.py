@@ -1,6 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .viewsets import TransactionViewSet, CategoryViewSet, signup, CustomAuthToken, get_user_info
+from .viewsets import TransactionViewSet, CategoryViewSet, BudgetViewSet, IncomeViewSet, ExpenseViewSet, signup, CustomAuthToken, get_user_info
 
 router = DefaultRouter()
 router.register('transactions', TransactionViewSet, basename='transaction')

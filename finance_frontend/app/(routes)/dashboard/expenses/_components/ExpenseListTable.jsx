@@ -1,22 +1,36 @@
-import { db } from "@/utils/dbConfig";
-import { Expenses } from "@/utils/schema";
-import { eq } from "drizzle-orm";
 import { Trash } from "lucide-react";
 import React from "react";
 import { toast } from "sonner";
+import axios from "axios";
 
 function ExpenseListTable({ expensesList, refreshData }) {
-  const deleteExpense = async (expense) => {
-    const result = await db
-      .delete(Expenses)
-      .where(eq(Expenses.id, expense.id))
-      .returning();
+  /**
+   * Delete expense using Django API
+   */
 
-    if (result) {
-      toast("Expense Deleted!");
-      refreshData();
+  const deleteExpense = async (expense) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      // DELETE request to the Django API
+      const res = await axios.delete(
+        `http://localhost:8000/api/expenses/${expense.id}/`,
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      );
+
+      if (res.status === 204) {
+        toast("Expense Deleted!");
+        refreshData(); // Refresh the data after deletion
+      } else {
+        toast.error("Failed to delete expense");
+      }
+    } catch (error) {
+      console.error("Error deleting expense:", error);
+      toast.error("Error deleting expense");
     }
   };
+
   return (
     <div className="mt-3">
       <h2 className="font-bold text-lg">Latest Expenses</h2>
@@ -26,23 +40,20 @@ function ExpenseListTable({ expensesList, refreshData }) {
         <h2 className="font-bold">Date</h2>
         <h2 className="font-bold">Action</h2>
       </div>
-      {expensesList.map((expenses, index) => (
-        <div className="grid grid-cols-4 bg-slate-50 rounded-bl-xl rounded-br-xl p-2">
-          <h2>{expenses.name}</h2>
-          <h2>{expenses.amount}</h2>
-          <h2>{expenses.createdAt}</h2>
-          <h2
-            onClick={() => deleteExpense(expenses)}
-            className="text-red-500 cursor-pointer"
-          >
-            Delete
-          </h2>
-          {/* <h2>
+      {expensesList.map((expense, index) => (
+        <div
+          key={index}
+          className="grid grid-cols-4 bg-slate-50 rounded-bl-xl rounded-br-xl p-2"
+        >
+          <h2>{expense.name}</h2>
+          <h2>{expense.amount}</h2>
+          <h2>{expense.date}</h2>
+          <h2>
             <Trash
               className="text-red-500 cursor-pointer"
-              onClick={() => deleteExpense(expenses)}
+              onClick={() => deleteExpense(expense)}
             />
-          </h2> */}
+          </h2>
         </div>
       ))}
     </div>
@@ -50,3 +61,4 @@ function ExpenseListTable({ expensesList, refreshData }) {
 }
 
 export default ExpenseListTable;
+
