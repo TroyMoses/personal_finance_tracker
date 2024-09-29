@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
-const inter = Inter({ subsets: ["latin"] });
+const outfit = Outfit({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Personal Finance Dashboard",
@@ -16,7 +17,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`inter.className, bg-gray-500 text-lg flex mx-auto justify-center items-center`}>{children}</body>
+      <Toaster />
+      <body
+        className={`outfit.className`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
