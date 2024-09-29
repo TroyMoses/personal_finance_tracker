@@ -1,4 +1,3 @@
-import { UserButton } from '@clerk/nextjs'
 import React from 'react'
 
 function DashboardHeader() {
@@ -7,8 +6,9 @@ function DashboardHeader() {
         <div>
           
         </div>
+
         <div>
-            <UserButton afterSignOutUrl='/'/>
+          User Button
         </div>
        
     </div>

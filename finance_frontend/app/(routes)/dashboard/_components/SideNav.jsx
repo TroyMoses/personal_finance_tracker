@@ -9,7 +9,6 @@ import {
   TrendingUp,
   TrendingDownIcon,
 } from "lucide-react";
-import { UserButton } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 function SideNav() {
@@ -70,8 +69,8 @@ function SideNav() {
         height={100}
         /> */}
       <div className="flex flex-row items-center">
-        <Image src={"./chart-donut.svg"} alt="logo" width={40} height={25} />
-        <span className="text-blue-800 font-bold text-xl">FinanSmart</span>
+        <Image src={"/chart-donut.svg"} alt="logo" width={40} height={25} />
+        <span className="text-blue-800 font-bold text-xl">ExpeSmart</span>
       </div>
       <div className="mt-5">
         {menuList.map((menu, index) => (
@@ -95,7 +94,6 @@ function SideNav() {
         className="fixed bottom-10 p-5 flex gap-2
             items-center"
       >
-        <UserButton />
         Profile
       </div>
     </div>
