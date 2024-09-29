@@ -15,8 +15,8 @@ function Dashboard() {
   const [incomeList, setIncomeList] = useState([]);
   const [expensesList, setExpensesList] = useState([]);
   useEffect(() => {
-    user && getBudgetList();
-  }, [user]);
+    getBudgetList();
+  }, []);
   /**
    * used to get budget List
    */
