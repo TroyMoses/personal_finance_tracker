@@ -68,13 +68,23 @@ class BudgetViewSet(viewsets.ModelViewSet):
     serializer_class = BudgetSerializer
     permission_classes = [IsAuthenticated]  
 
+    # Override perform_create to automatically associate the user
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class IncomeViewSet(viewsets.ModelViewSet):
     queryset = Income.objects.all()
     serializer_class = IncomeSerializer
     permission_classes = [IsAuthenticated]  
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 class ExpenseViewSet(viewsets.ModelViewSet):
     queryset = Expense.objects.all()
     serializer_class = ExpenseSerializer
     permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 

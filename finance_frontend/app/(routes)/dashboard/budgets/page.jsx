@@ -1,5 +1,5 @@
-import React from 'react'
-import BudgetList from './_components/BudgetList'
+import React from 'react';
+import BudgetList from './_components/BudgetList';
 
 function Budget() {
   return (
@@ -8,6 +8,6 @@ function Budget() {
       <BudgetList/>
     </div>
   )
-}
+};
 
-export default Budget
+export default Budget;

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   Dialog,
@@ -13,47 +14,49 @@ import {
 import EmojiPicker from "emoji-picker-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from "@/utils/dbConfig";
-import { Budgets } from "@/utils/schema";
-import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 import { toast } from "sonner";
 
 function CreateBudget({ refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-
-  const [name, setName] = useState();
-  const [amount, setAmount] = useState();
-
-  const { user } = useUser();
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
 
   /**
-   * Used to Create New Budget
+   * Create a new budget using Django API
    */
   const onCreateBudget = async () => {
-    const result = await db
-      .insert(Budgets)
-      .values({
-        name: name,
-        amount: amount,
-        createdBy: user?.primaryEmailAddress?.emailAddress,
-        icon: emojiIcon,
-      })
-      .returning({ insertedId: Budgets.id });
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.post(
+        "http://localhost:8000/api/budgets/",
+        {
+          name: name,
+          amount: amount,
+          icon: emojiIcon, 
+        },
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      );
 
-    if (result) {
-      refreshData();
-      toast("New Budget Created!");
+      if (res.status === 201) {
+        refreshData(); 
+        toast("New Budget Created!");
+      }
+    } catch (error) {
+      console.error("Error creating budget:", error);
+      toast.error("Failed to create budget.");
     }
   };
+
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
           <div
-            className="bg-slate-100 p-10 rounded-2xl
-            items-center flex flex-col border-2 border-dashed
-            cursor-pointer hover:shadow-md"
+            className="bg-slate-100 p-10 rounded-2xl items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md"
           >
             <h2 className="text-3xl">+</h2>
             <h2>Create New Budget</h2>
