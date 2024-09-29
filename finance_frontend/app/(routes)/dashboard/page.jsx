@@ -12,12 +12,29 @@ function Dashboard() {
   const [budgetList, setBudgetList] = useState([]);
   const [incomeList, setIncomeList] = useState([]);
   const [expensesList, setExpensesList] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
+    getUserInfo();
     getBudgetList();
     getIncomeList();
     getAllExpenses();
   }, []);
+
+   /**
+   * Fetch user info from Django API
+   */
+   const getUserInfo = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.get("http://localhost:8000/api/user-info/", {
+        headers: { Authorization: `Token ${token}` },
+      });
+      setUserInfo(res.data); // Store user info in state
+    } catch (error) {
+      console.error("Error fetching user info:", error);
+    }
+  };
 
   /**
    * Fetch budgets from Django API
@@ -69,7 +86,7 @@ function Dashboard() {
 
   return (
     <div className="p-8">
-      <h2 className="font-bold text-4xl">Hi, {user?.fullName} 👋</h2>
+      <h2 className="font-bold text-4xl">Hi, {userInfo?.username} 👋</h2>
       <p className="text-gray-500">
         Here's what's happening with your money. Let's manage your expenses.
       </p>

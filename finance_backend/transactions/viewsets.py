@@ -41,6 +41,20 @@ def signup(request):
 
     return Response({'token': token.key}, status=status.HTTP_201_CREATED)
 
+@api_view(['GET'])
+def get_user_info(request):
+    """
+    Returns basic information about the authenticated user.
+    """
+    user = request.user
+    if user.is_authenticated:
+        return Response({
+            'id': user.id,
+            'username': user.username,
+        })
+    else:
+        return Response({'error': 'User is not authenticated'}, status=401)
+
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data, context={'request': request})
