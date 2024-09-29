@@ -86,7 +86,7 @@ function Dashboard() {
 
   return (
     <div className="p-8">
-      <h2 className="font-bold text-4xl">Hi, {userInfo?.username} 👋</h2>
+      <h2 className="font-bold text-4xl">Hi, <span className="capitalize">{userInfo?.username}</span> 👋</h2>
       <p className="text-gray-500">
         Here's what's happening with your money. Let's manage your expenses.
       </p>
