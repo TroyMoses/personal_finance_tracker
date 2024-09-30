@@ -1,4 +1,5 @@
 "use client";
+
 import { Button } from "@/components/ui/button";
 import { PenBox } from "lucide-react";
 import React, { useEffect, useState } from "react";
@@ -13,50 +14,56 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import EmojiPicker from "emoji-picker-react";
-import { useUser } from "@clerk/nextjs";
-import { Input } from "@/components/ui/input";
-import { db } from "@/utils/dbConfig";
-import { Budgets } from "@/utils/schema";
-import { eq } from "drizzle-orm";
+import axios from "axios";
 import { toast } from "sonner";
+
 function EditBudget({ budgetInfo, refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-
-  const [name, setName] = useState();
-  const [amount, setAmount] = useState();
-
-  const { user } = useUser();
+  const [name, setName] = useState(budgetInfo?.name);
+  const [amount, setAmount] = useState(budgetInfo?.amount);
 
   useEffect(() => {
     if (budgetInfo) {
-      setEmojiIcon(budgetInfo?.icon);
-      setAmount(budgetInfo.amount);
+      setEmojiIcon(budgetInfo.icon);
       setName(budgetInfo.name);
+      setAmount(budgetInfo.amount);
     }
   }, [budgetInfo]);
-  const onUpdateBudget = async () => {
-    const result = await db
-      .update(Budgets)
-      .set({
-        name: name,
-        amount: amount,
-        icon: emojiIcon,
-      })
-      .where(eq(Budgets.id, budgetInfo.id))
-      .returning();
 
-    if (result) {
-      refreshData();
-      toast("Budget Updated!");
+  /**
+   * Update the budget using a PUT request to the Django API
+   */
+  const onUpdateBudget = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.put(
+        `http://localhost:8000/api/budgets/${budgetInfo.id}/`,
+        {
+          name: name,
+          amount: amount,
+          icon: emojiIcon,
+        },
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      );
+
+      if (res.status === 200) {
+        refreshData();
+        toast("Budget Updated!");
+      }
+    } catch (error) {
+      console.error("Error updating budget:", error);
+      toast.error("Failed to update budget.");
     }
   };
+
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
           <Button className="flex space-x-2 gap-2 rounded-full">
-            {" "}
             <PenBox className="w-4" /> Edit
           </Button>
         </DialogTrigger>
@@ -105,7 +112,7 @@ function EditBudget({ budgetInfo, refreshData }) {
             <DialogClose asChild>
               <Button
                 disabled={!(name && amount)}
-                onClick={() => onUpdateBudget()}
+                onClick={onUpdateBudget}
                 className="mt-5 w-full rounded-full"
               >
                 Update Budget

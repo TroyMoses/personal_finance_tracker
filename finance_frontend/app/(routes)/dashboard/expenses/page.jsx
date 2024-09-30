@@ -1,44 +1,66 @@
-"use client"
-import { db } from '@/utils/dbConfig';
-import { Budgets, Expenses } from '@/utils/schema';
-import { desc, eq } from 'drizzle-orm';
-import React, { useEffect, useState } from 'react'
-import ExpenseListTable from './_components/ExpenseListTable';
-import { useUser } from '@clerk/nextjs';
+"use client";
+
+import React, { useEffect, useState } from "react";
+import ExpenseListTable from "./_components/ExpenseListTable";
+import axios from "axios";
 
 function ExpensesScreen() {
+  const [expensesList, setExpensesList] = useState([]);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const [expensesList,setExpensesList]=useState([]);
-    const {user}=useUser();
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const token = localStorage.getItem("access_token");
+        const res = await axios.get("http://localhost:8000/api/user-info/", {
+          headers: { Authorization: `Token ${token}` },
+        });
+        setUserInfo(res.data); 
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+    if (userInfo) {
+      getBudgetList();
+    }
+  }, [userInfo]);
 
-    useEffect(()=>{
-        user&&getAllExpenses();
-      },[user])
-    /**
-   * Used to get All expenses belong to users
+  /**
+   * Fetch the list of budgets from the Django backend
    */
-  const getAllExpenses=async()=>{
-    const result=await db.select({
-      id:Expenses.id,
-      name:Expenses.name,
-      amount:Expenses.amount,
-      createdAt:Expenses.createdAt
-    }).from(Budgets)
-    .rightJoin(Expenses,eq(Budgets.id,Expenses.budgetId))
-    .where(eq(Budgets.createdBy,user?.primaryEmailAddress.emailAddress))
-    .orderBy(desc(Expenses.id));
-    setExpensesList(result);
-   
-  }
-  return (
-    <div className='p-10'>
-      <h2 className='font-bold text-3xl'>My Expenses</h2>
+  const getBudgetList = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.get("http://localhost:8000/api/budgets/", {
+        headers: { Authorization: `Token ${token}` },
+      });
+      setBudgetList(res.data);  
+    } catch (error) {
+      console.error("Error fetching budget list:", error);
+    }
+  };
 
-        <ExpenseListTable refreshData={()=>getAllExpenses()}
-        expensesList={expensesList}
-        />
+  /**
+   * Fetch all expenses for the current user from Django API
+   */
+  const getAllExpenses = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.get("http://localhost:8000/api/expenses/", {
+        headers: { Authorization: `Token ${token}` },
+      });
+      setExpensesList(res.data);
+    } catch (error) {
+      console.error("Error fetching expenses:", error);
+    }
+  };
+
+  return (
+    <div className="p-10">
+      <h2 className="font-bold text-3xl">My Expenses</h2>
+      <ExpenseListTable refreshData={getAllExpenses} expensesList={expensesList} />
     </div>
-  )
+  );
 }
 
-export default ExpensesScreen
+export default ExpensesScreen;

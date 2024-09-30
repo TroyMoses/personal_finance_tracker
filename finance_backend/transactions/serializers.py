@@ -12,24 +12,24 @@ class TransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = ['id', 'amount', 'transaction_type', 'category', 'date']
+        fields = ['id', 'amount', 'transaction_type', 'category']
 
 class BudgetSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Transaction
-        fields = ['id', 'name', 'amount', 'icon', 'date']
+        model = Budget
+        fields = ['id', 'name', 'amount', 'icon']
 
 class IncomeSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = Transaction
-        fields = ['id', 'name', 'amount', 'date']
+        model = Income
+        fields = ['id', 'name', 'amount']
       
 class ExpenseSerializer(serializers.ModelSerializer):
     # Use PrimaryKeyRelatedField to handle ForeignKey via ID
     budget = serializers.PrimaryKeyRelatedField(queryset=Budget.objects.all())
 
     class Meta:
-        model = Transaction
-        fields = ['id', 'name', 'amount', 'budget', 'date']
+        model = Expense
+        fields = ['id', 'name', 'amount', 'budget']

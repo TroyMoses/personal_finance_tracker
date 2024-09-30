@@ -35,6 +35,7 @@ function CreateBudget({ refreshData }) {
           name: name,
           amount: amount,
           icon: emojiIcon, 
+          date: moment().format("YYYY-MM-DD"),
         },
         {
           headers: { Authorization: `Token ${token}` },

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import {
   Dialog,
@@ -13,47 +14,51 @@ import {
 import EmojiPicker from "emoji-picker-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { db } from "@/utils/dbConfig";
-import { Incomes } from "@/utils/schema";
-import { useUser } from "@clerk/nextjs";
+import axios from "axios";
 import { toast } from "sonner";
 
 function CreateIncomes({ refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState("😀");
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-
-  const [name, setName] = useState();
-  const [amount, setAmount] = useState();
-
-  const { user } = useUser();
+  const [name, setName] = useState("");
+  const [amount, setAmount] = useState("");
 
   /**
-   * Used to Create New Budget
+   * Create a new income source using Django API
    */
   const onCreateIncomes = async () => {
-    const result = await db
-      .insert(Incomes)
-      .values({
-        name: name,
-        amount: amount,
-        createdBy: user?.primaryEmailAddress?.emailAddress,
-        icon: emojiIcon,
-      })
-      .returning({ insertedId: Incomes.id });
+    try {
+      const token = localStorage.getItem("access_token");
+      const res = await axios.post(
+        "http://localhost:8000/api/incomes/",
+        {
+          name: name,
+          amount: amount,
+          icon: emojiIcon,  
+        },
+        {
+          headers: { Authorization: `Token ${token}` },
+        }
+      );
 
-    if (result) {
-      refreshData();
-      toast("New Income Source Created!");
+      if (res.status === 201) {
+        refreshData();  
+        toast("New Income Source Created!");
+        setName("");
+        setAmount("");
+      }
+    } catch (error) {
+      console.error("Error creating income:", error);
+      toast.error("Failed to create income source.");
     }
   };
+
   return (
     <div>
       <Dialog>
         <DialogTrigger asChild>
           <div
-            className="bg-slate-100 p-10 rounded-2xl
-            items-center flex flex-col border-2 border-dashed
-            cursor-pointer hover:shadow-md"
+            className="bg-slate-100 p-10 rounded-2xl items-center flex flex-col border-2 border-dashed cursor-pointer hover:shadow-md"
           >
             <h2 className="text-3xl">+</h2>
             <h2>Create New Income Source</h2>
@@ -84,14 +89,16 @@ function CreateIncomes({ refreshData }) {
                   <h2 className="text-black font-medium my-1">Source Name</h2>
                   <Input
                     placeholder="e.g. Youtube"
+                    value={name}
                     onChange={(e) => setName(e.target.value)}
                   />
                 </div>
                 <div className="mt-2">
-                  <h2 className="text-black font-medium my-1">Montly Amount</h2>
+                  <h2 className="text-black font-medium my-1">Monthly Amount</h2>
                   <Input
                     type="number"
                     placeholder="e.g. 5000$"
+                    value={amount}
                     onChange={(e) => setAmount(e.target.value)}
                   />
                 </div>
@@ -102,7 +109,7 @@ function CreateIncomes({ refreshData }) {
             <DialogClose asChild>
               <Button
                 disabled={!(name && amount)}
-                onClick={() => onCreateIncomes()}
+                onClick={onCreateIncomes}
                 className="mt-5 w-full rounded-full"
               >
                 Create Income Source
