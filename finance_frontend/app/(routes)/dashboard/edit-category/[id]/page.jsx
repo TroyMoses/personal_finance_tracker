@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
-export default function EditCategory() {
+export default function EditCategory({ params }) {
   const [name, setName] = useState('');
   const router = useRouter();
-  const { id } = router.query;
+  const { id } = params;
 
   useEffect(() => {
     const fetchCategory = async () => {
@@ -45,6 +45,7 @@ export default function EditCategory() {
         <input
           type="text"
           placeholder="Category Name"
+          className="text-black"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

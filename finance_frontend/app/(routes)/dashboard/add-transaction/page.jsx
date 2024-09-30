@@ -24,13 +24,15 @@ export default function AddTransaction() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const token = localStorage.getItem('access_token');
+
     await axios.post(
       'http://localhost:8000/api/transactions/',
       {
         amount,
         transaction_type: transactionType,
-        category: { id: category },
+        category,
         date: new Date().toISOString().split('T')[0],
       },
       { headers: { Authorization: `Token ${token}` } }
@@ -39,20 +41,20 @@ export default function AddTransaction() {
   };
 
   return (
-    <div>
-      <h1>Add New Transaction</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="bg-[gray] p-5 mt-20 rounded-lg text-center">
+      <h1 className="text-2xl my-5 uppercase">Add New Transaction</h1>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-5">
         <input
           type="number"
-          placeholder="Amount"
-          className="text-black"
+          placeholder="Enter Amount"
+          className="text-black rounded-sm py-1 px-3"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         <select
           value={transactionType}
           onChange={(e) => setTransactionType(e.target.value)}
-          className="text-black"
+          className="text-black rounded-sm py-1 px-3"
         >
           <option value="income">Income</option>
           <option value="expense">Expense</option>
@@ -60,7 +62,7 @@ export default function AddTransaction() {
         <select
           value={category}
           onChange={(e) => setCategory(e.target.value)}
-          className="text-black"
+          className="text-black rounded-sm py-1 px-3"
         >
           <option value="">Select Category</option>
           {categories.map((cat) => (
@@ -69,7 +71,7 @@ export default function AddTransaction() {
             </option>
           ))}
         </select>
-        <button type="submit">Add Transaction</button>
+        <button type="submit" className="bg-green-500 py-1 px-2 rounded-md">Add Transaction</button>
       </form>
     </div>
   );

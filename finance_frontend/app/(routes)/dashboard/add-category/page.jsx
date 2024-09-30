@@ -1,23 +1,23 @@
 "use client";
 
-import { useState } from 'react';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function AddCategory() {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('access_token');
+    const token = localStorage.getItem("access_token");
     try {
       await axios.post(
-        'http://localhost:8000/api/categories/',
+        "http://localhost:8000/api/categories/",
         { name },
         { headers: { Authorization: `Token ${token}` } }
       );
-      router.push('/categories');
+      router.push("/categories");
     } catch (error) {
       console.error("Error adding category:", error);
     }
@@ -30,6 +30,7 @@ export default function AddCategory() {
         <input
           type="text"
           placeholder="Category Name"
+          className="text-black"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />

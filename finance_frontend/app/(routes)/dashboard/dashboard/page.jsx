@@ -45,20 +45,35 @@ export default function Dashboard() {
     .reduce((acc, curr) => acc + curr.amount, 0);
 
   return (
-    <div>
-      <h1>Transaction Dashboard</h1>
+    <div className="bg-[gray] p-5 mt-20 rounded-lg text-center">
+      <h1 className="text-2xl my-5">PERSONAL EXPENSE TRACKER</h1>
 
-      <Link href="/add-transaction">Add New Transaction</Link>
+      <div className="flex flex-col gap-3 justify-center items-center">
+        <Link
+          href="/add-transaction"
+          className="bg-green-500 py-1 px-2 rounded-md"
+        >
+          Add New Transaction
+        </Link>
 
-      <Link href="/categories">Manage Categories</Link>
+        <Link href="/categories" className="bg-blue-500 py-1 px-2 rounded-md">
+          Manage Categories
+        </Link>
+      </div>
 
-      <ul>
+      <ul className="flex flex-col justify-center px-3 capitalize my-4 gap-6">
         {transactions.map((transaction) => (
-          <li key={transaction.id}>
-            {transaction.transaction_type}: {transaction.amount} -{" "}
-            {transaction.category.name}
-            <button onClick={() => handleDelete(transaction.id)}>Delete</button>
-            <Link href={`/edit-transaction/${transaction.id}`}>Edit</Link>
+          <li key={transaction.id} className="flex justify-between">
+            <span>
+              {transaction.transaction_type}: {transaction.amount}
+              {transaction.category.name}
+            </span>
+            <span className="flex justify-between gap-4">
+              <button className="bg-red-500 py-1 px-2 rounded-md" onClick={() => handleDelete(transaction.id)}>
+                Delete
+              </button>
+              <Link className="bg-yellow-500 py-1 px-2 rounded-md" href={`/edit-transaction/${transaction.id}`}>Edit</Link>
+            </span>
           </li>
         ))}
       </ul>
@@ -66,7 +81,7 @@ export default function Dashboard() {
         data={[
           {type: 'bar', x: ['Income', 'Expenses'], y: [income, expenses]}
         ]}
-        layout={{width: 600, height: 400, title: 'Income vs Expenses'}}
+        layout={{width: 400, height: 300, title: 'Income vs Expenses'}}
       /> */}
     </div>
   );
