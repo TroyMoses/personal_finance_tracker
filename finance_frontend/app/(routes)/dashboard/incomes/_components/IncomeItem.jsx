@@ -2,10 +2,11 @@ import Link from "next/link";
 import React from "react";
 
 function IncomeItem({ budget }) {
-  const calculateProgressPerc = () => {
-    const perc = (budget.totalSpend / budget.amount) * 100;
-    return perc > 100 ? 100 : perc.toFixed(2);
-  };
+  // const calculateProgressPerc = () => {
+  //   const perc = (budget.totalSpend / budget.amount) * 100;
+  //   return perc > 100 ? 100 : perc.toFixed(2);
+  // };
+  console.log("Budget", budget);
   return (
     <div
       className="p-5 border rounded-2xl
@@ -22,7 +23,10 @@ function IncomeItem({ budget }) {
           </h2>
           <div>
             <h2 className="font-bold">{budget.name}</h2>
-            <h2 className="text-sm text-gray-500">{budget.totalItem} Item</h2>
+            <h2 className="text-sm text-gray-500">
+              {budget.totalItem}
+              Item
+            </h2>
           </div>
         </div>
         <h2 className="font-bold text-primary text-lg"> ${budget.amount}</h2>

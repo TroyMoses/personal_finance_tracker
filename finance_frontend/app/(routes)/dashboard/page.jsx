@@ -30,7 +30,7 @@ function Dashboard() {
       const res = await axios.get("http://localhost:8000/api/user-info/", {
         headers: { Authorization: `Token ${token}` },
       });
-      setUserInfo(res.data); // Store user info in state
+      setUserInfo(res.data); 
     } catch (error) {
       console.error("Error fetching user info:", error);
     }
@@ -46,7 +46,7 @@ function Dashboard() {
       const res = await axios.get("http://localhost:8000/api/budgets/", {
         headers: { Authorization: `Token ${token}` },
       });
-      setBudgetList(res.data);  // Assuming res.data is the list of budgets
+      setBudgetList(res.data);
     } catch (error) {
       console.error("Error fetching budget list:", error);
     }
@@ -62,7 +62,8 @@ function Dashboard() {
       const res = await axios.get("http://localhost:8000/api/incomes/", {
         headers: { Authorization: `Token ${token}` },
       });
-      setIncomeList(res.data);  // Assuming res.data is the list of incomes
+      console.log("Income List:", res);
+      setIncomeList(res.data);  
     } catch (error) {
       console.error("Error fetching income list:", error);
     }

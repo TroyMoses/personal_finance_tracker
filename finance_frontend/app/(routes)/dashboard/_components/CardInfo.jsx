@@ -48,7 +48,7 @@ function CardInfo({ budgetList, incomeList }) {
     });
 
     incomeList.forEach((element) => {
-      totalIncome_ = totalIncome_ + element.totalAmount;
+      totalIncome_ = totalIncome_ + Number(element.amount);
     });
 
     setTotalIncome(totalIncome_);

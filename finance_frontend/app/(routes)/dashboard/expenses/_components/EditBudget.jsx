@@ -16,6 +16,7 @@ import {
 import EmojiPicker from "emoji-picker-react";
 import axios from "axios";
 import { toast } from "sonner";
+import { Input } from "@/components/ui/input";
 
 function EditBudget({ budgetInfo, refreshData }) {
   const [emojiIcon, setEmojiIcon] = useState(budgetInfo?.icon);

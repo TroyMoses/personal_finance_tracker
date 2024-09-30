@@ -6,24 +6,10 @@ import IncomeItem from "./IncomeItem";
 
 function IncomeList() {
   const [incomeList, setIncomeList] = useState([]);
-  const [userInfo, setUserInfo] = useState(null);
 
   useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const token = localStorage.getItem("access_token");
-        const res = await axios.get("http://localhost:8000/api/user-info/", {
-          headers: { Authorization: `Token ${token}` },
-        });
-        setUserInfo(res.data); 
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-    if (userInfo) {
-      getBudgetList();
-    }
-  }, [userInfo]);
+    getIncomeList();
+  }, []);
 
   /**
    * Fetch income list from Django API
@@ -34,7 +20,8 @@ function IncomeList() {
       const res = await axios.get("http://localhost:8000/api/incomes/", {
         headers: { Authorization: `Token ${token}` },
       });
-      setIncomeList(res.data);  // Assuming res.data contains the list of incomes
+      console.log("Income List:", res);
+      setIncomeList(res.data); 
     } catch (error) {
       console.error("Error fetching income list:", error);
     }
@@ -47,8 +34,8 @@ function IncomeList() {
       >
         <CreateIncomes refreshData={getIncomeList} />
         {incomeList?.length > 0
-          ? incomeList.map((income, index) => (
-              <IncomeItem income={income} key={index} />
+          ? incomeList.map((budget, index) => (
+              <IncomeItem budget={budget} key={index} />
             ))
           : [1, 2, 3, 4, 5].map((item, index) => (
               <div
